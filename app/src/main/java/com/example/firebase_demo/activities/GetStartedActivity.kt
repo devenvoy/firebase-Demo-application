@@ -7,7 +7,6 @@ import android.os.Handler
 import android.os.Looper
 import com.example.firebase_demo.databinding.ActivityGetStartedBinding
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 

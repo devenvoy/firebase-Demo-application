@@ -14,4 +14,44 @@
         android:layout_margin="10dp"
         android:src="@drawable/logout_pic" />
 
+
+    <EditText
+        android:id="@+id/edt_name"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="100dp"
+        android:hint="Enter name"
+        android:paddingHorizontal="20dp" />
+
+    <EditText
+        android:id="@+id/edt_number"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/edt_name"
+        android:layout_marginTop="10dp"
+        android:hint="Enter Number"
+        android:inputType="phone"
+        android:paddingHorizontal="20dp" />
+
+    <ImageView
+        android:id="@+id/img_user"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_below="@+id/edt_number"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/baseline_add_to_photos_24" />
+
+    <Button
+        android:id="@+id/submit"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/img_user"
+        android:layout_marginHorizontal="60dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/black"
+        android:text="Submit" />
+
+
 </RelativeLayout>

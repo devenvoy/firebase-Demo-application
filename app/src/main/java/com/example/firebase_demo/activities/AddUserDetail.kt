@@ -6,8 +6,9 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import com.example.firebase_demo.databinding.ActivityMainBinding
+import com.example.firebase_demo.databinding.ActivityAddUserBinding
 import com.example.firebase_demo.utils.BaseActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -19,13 +20,13 @@ import com.google.firebase.storage.ktx.storage
 import java.io.ByteArrayOutputStream
 import kotlin.random.Random
 
-class MainActivity : BaseActivity() {
+class AddUserDetail : BaseActivity() {
 
     private lateinit var database: FirebaseDatabase
 
     //    private lateinit var database:
     private lateinit var storage: FirebaseStorage
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityAddUserBinding
 
     private lateinit var auth: FirebaseAuth
 
@@ -34,7 +35,7 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityAddUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         auth = Firebase.auth
@@ -49,7 +50,9 @@ class MainActivity : BaseActivity() {
         }
 
         binding.submit.setOnClickListener {
-            var storageRef = storage.reference
+
+            showProgressBar()
+            val storageRef = storage.reference
             val name = binding.edtName.text.toString()
             val number = binding.edtNumber.text.toString()
             val imgname = "$name${Random.nextInt(1000, 9999)}.jpg"
@@ -93,21 +96,19 @@ class MainActivity : BaseActivity() {
                         val user = User(name, number, imgUrl)
 
                         myRef.setValue(user)
+                        Toast.makeText(
+                            this@AddUserDetail,
+                            "User Added Successfully",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        hideProgressBar()
+                        finish()
 
                     } else {
                         // Handle failures
                         // ...
                     }
                 }
-            }
-        }
-
-        binding.imgLogout.setOnClickListener {
-            Log.e("====", "clicked ")
-            if (auth.currentUser != null) {
-                auth.signOut()
-                startActivity(Intent(this@MainActivity, GetStartedActivity::class.java))
-                finish()
             }
         }
     }

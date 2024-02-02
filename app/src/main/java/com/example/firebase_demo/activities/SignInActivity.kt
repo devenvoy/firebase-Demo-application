@@ -1,16 +1,12 @@
 package com.example.firebase_demo.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.util.Patterns
-import android.widget.Toast
 import com.example.firebase_demo.databinding.ActivitySignInBinding
 import com.example.firebase_demo.utils.BaseActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -52,7 +48,7 @@ class SignInActivity : BaseActivity() {
                         hideProgressBar()
                         // Sign in success, update UI with the signed-in user's information
                         showToast(this@SignInActivity, "Logged In\nSuccessfully")
-                        startActivity(Intent(this@SignInActivity, MainActivity::class.java))
+                        startActivity(Intent(this@SignInActivity, AddUserDetail::class.java))
                         finish()
                         val user = auth.currentUser
                     } else {

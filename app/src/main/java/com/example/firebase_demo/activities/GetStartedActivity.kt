@@ -25,7 +25,7 @@ class GetStartedActivity : AppCompatActivity() {
 
         Handler(Looper.getMainLooper()).postDelayed({
             if (auth.currentUser != null) {
-                startActivity(Intent(this, MainActivity::class.java))
+                startActivity(Intent(this, ShowUsers::class.java))
                 finish()
             } else {
                 startActivity(Intent(this@GetStartedActivity, SignInActivity::class.java))

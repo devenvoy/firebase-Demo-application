@@ -91,9 +91,10 @@ class AddUserDetail : BaseActivity() {
 
 // Write a message to the database
                         database = Firebase.database
-                        val myRef = database.getReference("MyData/Users").push()
+                        val myRef =
+                            database.getReference("MyData/Users/${auth.currentUser?.uid}").push()
 
-                        val user = User(name, number, imgUrl)
+                        val user = User(myRef.key, name, number, imgUrl)
 
                         myRef.setValue(user)
                         Toast.makeText(
@@ -102,6 +103,7 @@ class AddUserDetail : BaseActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
                         hideProgressBar()
+//                        startActivity(this)
                         finish()
 
                     } else {

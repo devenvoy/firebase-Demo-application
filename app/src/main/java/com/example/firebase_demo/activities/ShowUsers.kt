@@ -22,6 +22,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.Query
 import com.google.firebase.ktx.Firebase
+import kotlin.math.log
 
 
 class ShowUsers : AppCompatActivity() {
@@ -37,7 +38,7 @@ class ShowUsers : AppCompatActivity() {
 
         auth = Firebase.auth
 
-        val query: Query = FirebaseDatabase.getInstance().reference.child("MyData/Users")
+        val query: Query = FirebaseDatabase.getInstance().reference.child("MyData/Users/${auth.currentUser?.uid}")
 
         val options: FirebaseRecyclerOptions<User?> =
             FirebaseRecyclerOptions.Builder<User>().setQuery(query, User::class.java).build()
@@ -77,12 +78,16 @@ class ShowUsers : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        Log.e("======", "onStart: ")
         adapter.startListening()
     }
 
-    override fun onStop() {
-        super.onStop()
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.e("======", "onDestroy: ")
         adapter.stopListening()
+
     }
 }
 

@@ -35,7 +35,7 @@ android {
         jvmTarget = "1.8"
     }
 
-    buildFeatures{
+    buildFeatures {
         viewBinding = true
     }
 }
@@ -52,20 +52,21 @@ dependencies {
 
     // Firebase BOM
     implementation(platform("com.google.firebase:firebase-bom:32.7.1"))
-// FireBase Analytics
+    // FireBase Analytics
     implementation("com.google.firebase:firebase-analytics")
-// Add the dependency for the Firebase Authentication library
-    implementation ("com.google.firebase:firebase-auth")
+    // Add the dependency for the Firebase Authentication library
+    implementation("com.google.firebase:firebase-auth")
     // Add the dependency for the Cloud Storage library
-// When using the BoM, you don't specify versions in Firebase library dependencies
+    // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation("com.google.firebase:firebase-storage")
-
     // Add the dependency for the Realtime Database library
-// When using the BoM, you don't specify versions in Firebase library dependencies
+    // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation("com.google.firebase:firebase-database")
-
-    implementation ("com.firebaseui:firebase-ui-database:8.0.2")
-
+    implementation("com.firebaseui:firebase-ui-database:8.0.2")
     // glide
     implementation("com.github.bumptech.glide:glide:4.16.0")
+    // Google Login
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+
+
 }

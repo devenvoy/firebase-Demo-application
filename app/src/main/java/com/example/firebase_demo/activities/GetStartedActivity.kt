@@ -33,4 +33,5 @@ class GetStartedActivity : AppCompatActivity() {
             }
         }, 3000)
     }
+
 }

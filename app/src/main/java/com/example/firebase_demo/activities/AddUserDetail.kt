@@ -22,16 +22,11 @@ import kotlin.random.Random
 
 class AddUserDetail : BaseActivity() {
 
-    private lateinit var database: FirebaseDatabase
-
-    //    private lateinit var database:
-    private lateinit var storage: FirebaseStorage
     private lateinit var binding: ActivityAddUserBinding
-
+    private lateinit var database: FirebaseDatabase
+    private lateinit var storage: FirebaseStorage
     private lateinit var auth: FirebaseAuth
-
     lateinit var imgUrl: String
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,8 +34,14 @@ class AddUserDetail : BaseActivity() {
         setContentView(binding.root)
 
         auth = Firebase.auth
-
         storage = Firebase.storage
+        database = Firebase.database
+        val storageRef = storage.reference
+
+        val dbReference =
+            database.getReference(
+                "MyData/Users/${auth.currentUser!!.uid}"
+            ).push()
 
         binding.imgUser.setOnClickListener {
             val intent = Intent()
@@ -52,13 +53,12 @@ class AddUserDetail : BaseActivity() {
         binding.submit.setOnClickListener {
 
             showProgressBar()
-            val storageRef = storage.reference
+
             val name = binding.edtName.text.toString()
             val number = binding.edtNumber.text.toString()
             val imgname = "$name${Random.nextInt(1000, 9999)}.jpg"
 
             val imageRef = storageRef.child("Images/$imgname")
-
             binding.imgUser.isDrawingCacheEnabled = true
             binding.imgUser.buildDrawingCache()
             val bitmap = (binding.imgUser.drawable as BitmapDrawable).bitmap
@@ -67,11 +67,9 @@ class AddUserDetail : BaseActivity() {
             val data = baos.toByteArray()
 
             // this method store image in storage
-            var uploadTask = imageRef.putBytes(data)
+            val uploadTask = imageRef.putBytes(data)
 
-            uploadTask.addOnFailureListener {
-                // Handle unsuccessful uploads
-            }.addOnSuccessListener { taskSnapshot ->
+            uploadTask.addOnFailureListener {}.addOnSuccessListener { taskSnapshot ->
 
                 val urlTask = uploadTask.continueWithTask { task ->
                     if (!task.isSuccessful) {
@@ -89,14 +87,9 @@ class AddUserDetail : BaseActivity() {
 
                         Log.e("===", "submit: $imageurl")
 
-// Write a message to the database
-                        database = Firebase.database
-                        val myRef =
-                            database.getReference("MyData/Users/${auth.currentUser?.uid}").push()
+                        val user = User(dbReference.key, name, number, imgUrl)
 
-                        val user = User(myRef.key, name, number, imgUrl)
-
-                        myRef.setValue(user)
+                        dbReference.setValue(user)
                         Toast.makeText(
                             this@AddUserDetail,
                             "User Added Successfully",
@@ -115,12 +108,13 @@ class AddUserDetail : BaseActivity() {
         }
     }
 
-    val imgLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        if (it.resultCode == RESULT_OK) {
-            if (it.data != null) {
-                val selectedimgUri = it.data!!.data
-                binding.imgUser.setImageURI(selectedimgUri)
+    private val imgLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                if (it.data != null) {
+                    val selectedimgUri = it.data!!.data
+                    binding.imgUser.setImageURI(selectedimgUri)
+                }
             }
         }
-    }
 }

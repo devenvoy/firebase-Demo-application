@@ -38,7 +38,18 @@ class ShowUsers : AppCompatActivity() {
 
         auth = Firebase.auth
 
-        val query: Query = FirebaseDatabase.getInstance().reference.child("MyData/Users/${auth.currentUser?.uid}")
+        val user = auth.currentUser!!
+
+        Glide.with(this@ShowUsers).load(user.photoUrl).into(binding.CUimg)
+
+        val userData = "${user.email}\n${user.uid}\n${user.metadata.toString()}\n${user.tenantId}"
+
+        if (userData.isNotEmpty()) {
+            binding.CVdata.text = userData
+        }
+
+        val query: Query =
+            FirebaseDatabase.getInstance().reference.child("MyData/Users/${user.uid}")
 
         val options: FirebaseRecyclerOptions<User?> =
             FirebaseRecyclerOptions.Builder<User>().setQuery(query, User::class.java).build()
@@ -67,8 +78,14 @@ class ShowUsers : AppCompatActivity() {
                 val userdata = "Name : " + model.username + "\nNumber : " + model.number
                 holder.UserDetails.text = userdata
                 Glide.with(this@ShowUsers).load(model.imgUrl).into(holder.UserImage)
-            }
 
+                holder.itemView.setOnLongClickListener {
+                    val intt = Intent(this@ShowUsers, UpdateUser::class.java)
+                    intt.putExtra("user", model)
+                    startActivity(intt)
+                    true
+                }
+            }
         }
 
         binding.recyclerView.adapter = adapter
